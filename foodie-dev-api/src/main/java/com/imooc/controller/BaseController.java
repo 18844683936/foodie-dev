@@ -11,4 +11,6 @@ import springfox.documentation.annotations.ApiIgnore;
  */
 public class BaseController {
     public final Integer COMMENT_PAGE_SIZE = 10;
+
+    public final Integer PAGE_SIZE = 20;
 }

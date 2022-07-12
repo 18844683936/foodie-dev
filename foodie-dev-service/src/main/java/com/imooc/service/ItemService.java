@@ -5,7 +5,6 @@ import com.imooc.pojo.ItemsImg;
 import com.imooc.pojo.ItemsParam;
 import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
-import com.imooc.pojo.vo.ItemCommentVO;
 import com.imooc.utils.PagedGridResult;
 
 import java.util.List;
@@ -78,4 +77,15 @@ public interface ItemService {
      * @return java.util.List<com.imooc.pojo.vo.ItemCommentVO>
      **/
     PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
+
+    /*
+     * @Description  搜索商品列表
+     * @author <a href="mailto:guang.chen@zkteco.com">guang.chen</a>
+     * @since v1.0
+     * @Date  2022/7/12 9:39
+     * @Param [keywords, sort, page, pageSize]
+     * @return com.imooc.utils.PagedGridResult
+     **/
+    PagedGridResult searchItems(String keywords,
+                                String sort, Integer page, Integer pageSize);
 }
