@@ -5,6 +5,7 @@ import com.imooc.pojo.vo.CommentLevelCountsVO;
 import com.imooc.pojo.vo.ItemInfoVO;
 import com.imooc.service.ItemService;
 import com.imooc.utils.IMOOCJSONResult;
+import com.imooc.utils.PagedGridResult;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @description: 商品信息展示的相关接口
@@ -22,7 +24,7 @@ import java.util.List;
 @RestController
 @RequestMapping("items")
 @Api(value = "商品接口",tags = "商品信息展示的相关接口")
-public class ItemsController {
+public class ItemsController extends BaseController {
 
     @Autowired
     private ItemService itemService;
@@ -65,6 +67,34 @@ public class ItemsController {
         CommentLevelCountsVO countsVO = itemService.queryCommentCounts(itemId);
 
         return IMOOCJSONResult.ok(countsVO);
+    }
+    @GetMapping("/comments")
+    @ApiOperation(value = "查询商品评价",notes = "查询商品评价",httpMethod = "GET")
+    public IMOOCJSONResult comments(
+                                    @ApiParam(name = "itemId",value = "商品id",required = true)
+                                    @RequestParam String itemId,
+                                    @ApiParam(name = "level",value = "商品等级",required = false)
+                                    @RequestParam Integer level,
+                                    @ApiParam(name = "page",value = "第几页",required = false)
+                                    @RequestParam Integer page,
+                                    @ApiParam(name = "pageSize",value = "每页条数",required = false)
+                                    @RequestParam Integer pageSize){
+
+        if (StringUtils.isBlank(itemId)){
+            return IMOOCJSONResult.errorMsg(null);
+        }
+
+        if (Objects.isNull(page)){
+            page = 1;
+        }
+
+        if (Objects.isNull(pageSize)){
+                pageSize = COMMENT_PAGE_SIZE;
+        }
+
+        PagedGridResult grid = itemService.queryPagedComments(itemId, level, page, pageSize);
+
+        return IMOOCJSONResult.ok(grid);
     }
 
 }

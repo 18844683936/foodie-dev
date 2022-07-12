@@ -6,6 +6,7 @@ import com.imooc.pojo.ItemsParam;
 import com.imooc.pojo.ItemsSpec;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
 import com.imooc.pojo.vo.ItemCommentVO;
+import com.imooc.utils.PagedGridResult;
 
 import java.util.List;
 
@@ -76,5 +77,5 @@ public interface ItemService {
      * @Param [itemId, level]
      * @return java.util.List<com.imooc.pojo.vo.ItemCommentVO>
      **/
-    List<ItemCommentVO> queryPagedComments(String itemId,Integer level);
+    PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize);
 }
