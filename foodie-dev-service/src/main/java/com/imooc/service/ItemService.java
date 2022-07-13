@@ -88,4 +88,15 @@ public interface ItemService {
      **/
     PagedGridResult searchItems(String keywords,
                                 String sort, Integer page, Integer pageSize);
+
+    /*
+     * @Description  搜索商品列表
+     * @author <a href="mailto:guang.chen@zkteco.com">guang.chen</a>
+     * @since v1.0
+     * @Date  2022/7/12 9:39
+     * @Param [keywords, sort, page, pageSize]
+     * @return com.imooc.utils.PagedGridResult
+     **/
+    PagedGridResult searchItems(Integer catId,
+                                String sort, Integer page, Integer pageSize);
 }

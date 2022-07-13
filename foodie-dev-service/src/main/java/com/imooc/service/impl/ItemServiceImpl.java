@@ -121,6 +121,17 @@ public class ItemServiceImpl implements ItemService {
         return grid;
     }
 
+    @Override
+    public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("catId",catId);
+        map.put("sort",sort);
+        PageHelper.startPage(page,pageSize);
+        List<SearchItemsVO> list = itemsMapperCustom.searchItemsByThirdCat(map);
+        PagedGridResult grid = setterPagedResult(list, page);
+        return grid;
+    }
+
     private PagedGridResult setterPagedResult(List<?> list,Integer page){
         PageInfo<?> pageInfo = new PageInfo<>(list);
         PagedGridResult grid = new PagedGridResult();
