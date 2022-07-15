@@ -41,4 +41,14 @@ public interface AddressService {
      * @return void
      **/
     void updateUserAddressToBeDefault(String userId,String addressId);
+
+    /*
+     * @Description  查询具体的用户地址对象信息
+     * @author <a href="mailto:guang.chen@zkteco.com">guang.chen</a>
+     * @since v1.0
+     * @Date  2022/7/15 10:44
+     * @Param [userId, addressId]
+     * @return com.imooc.pojo.UserAddress
+     **/
+    UserAddress queryUserAddress(String userId,String addressId);
 }

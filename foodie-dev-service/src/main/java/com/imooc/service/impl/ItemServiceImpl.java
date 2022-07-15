@@ -3,6 +3,7 @@ package com.imooc.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.imooc.enums.CommentLevel;
+import com.imooc.enums.YesOrNo;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
 import com.imooc.pojo.vo.CommentLevelCountsVO;
@@ -102,6 +103,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public PagedGridResult queryPagedComments(String itemId, Integer level, Integer page, Integer pageSize) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("itemId",itemId);
@@ -113,6 +115,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public PagedGridResult searchItems(String keywords, String sort, Integer page, Integer pageSize) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("keywords",keywords);
@@ -124,6 +127,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public PagedGridResult searchItems(Integer catId, String sort, Integer page, Integer pageSize) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("catId",catId);
@@ -135,10 +139,38 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
     public List<ShopcartVO> queryItemsBySpecIds(String specIds) {
         List<String> specIdList = Arrays.asList(specIds.split(","));
         List<ShopcartVO> list = itemsMapperCustom.queryItemsBySpecIds(specIdList);
         return list;
+    }
+
+    @Override
+    @Transactional(propagation = Propagation.SUPPORTS)
+    public ItemsSpec queryItemSpecById(String specId) {
+       return itemsSpecMapper.selectByPrimaryKey(specId);
+    }
+
+    @Override
+    public String queryItemMainImgById(String itemId) {
+        ItemsImg condition = ItemsImg.builder()
+                .itemId(itemId)
+                .isMain(YesOrNo.YES.type)
+                .build();
+        ItemsImg itemsImg = itemsImgMapper.selectOne(condition);
+        return itemsImg == null ? "" : itemsImg.getUrl();
+    }
+
+
+    @Override
+    @Transactional(propagation = Propagation.REQUIRED)
+    public void decreaseItemSpecStock(String specId, int buyCounts) {
+        //1. 目前使用乐观锁
+        int result = itemsMapperCustom.decreaseItemSpecStock(specId, buyCounts);
+        if (result !=1 ){
+            throw new RuntimeException("订单创建失败，原因：库存不足");
+        }
     }
 
     private PagedGridResult setterPagedResult(List<?> list,Integer page){

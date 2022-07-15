@@ -102,4 +102,36 @@ public interface ItemService {
                                 String sort, Integer page, Integer pageSize);
 
     List<ShopcartVO> queryItemsBySpecIds(String specIds);
+
+    /*
+     * @Description  根据商品规格id获取商品规格对象
+     * @author <a href="mailto:guang.chen@zkteco.com">guang.chen</a>
+     * @since v1.0
+     * @Date  2022/7/15 11:15
+     * @Param [specId]
+     * @return com.imooc.pojo.ItemsSpec
+     **/
+    ItemsSpec queryItemSpecById(String specId);
+
+
+    /*
+     * @Description  根据商品id获得商品主图地址
+     * @author <a href="mailto:guang.chen@zkteco.com">guang.chen</a>
+     * @since v1.0
+     * @Date  2022/7/15 11:28
+     * @Param [itemId]
+     * @return java.lang.String
+     **/
+    String queryItemMainImgById(String itemId);
+
+
+    /*
+     * @Description  减少库存
+     * @author <a href="mailto:guang.chen@zkteco.com">guang.chen</a>
+     * @since v1.0
+     * @Date  2022/7/15 14:46
+     * @Param [specId, buyCounts]
+     * @return void
+     **/
+    void decreaseItemSpecStock(String specId,int buyCounts);
 }

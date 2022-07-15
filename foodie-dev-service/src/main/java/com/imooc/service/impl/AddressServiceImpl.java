@@ -105,4 +105,15 @@ public class AddressServiceImpl implements AddressService {
         userAddressMapper.updateByPrimaryKeySelective(defaultAddress);
 
     }
+
+    @Override
+    public UserAddress queryUserAddress(String userId, String addressId) {
+        UserAddress condition = UserAddress.builder()
+                                            .userId(userId)
+                                            .id(addressId)
+                                            .build();
+        UserAddress address = userAddressMapper.selectOne(condition);
+
+        return address;
+    }
 }
