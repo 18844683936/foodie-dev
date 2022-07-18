@@ -6,6 +6,7 @@ import com.imooc.pojo.bo.AddressBO;
 import com.imooc.pojo.bo.SubmitOrderBO;
 import com.imooc.service.AddressService;
 import com.imooc.service.OrderService;
+import com.imooc.utils.CookieUtils;
 import com.imooc.utils.IMOOCJSONResult;
 import com.imooc.utils.JsonUtils;
 import com.imooc.utils.MobileEmailUtils;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -28,7 +31,7 @@ import java.util.List;
 @RestController
 @RequestMapping("orders")
 @Log4j
-public class OrdersController {
+public class OrdersController extends BaseController {
 
     @Autowired
     private OrderService orderService;
@@ -36,7 +39,7 @@ public class OrdersController {
 
     @PostMapping("/create")
     @ApiOperation(value = "用户下单",notes = "用户下单",httpMethod = "POST")
-    public IMOOCJSONResult create(@RequestBody SubmitOrderBO submitOrderBO){
+    public IMOOCJSONResult create(@RequestBody SubmitOrderBO submitOrderBO, HttpServletRequest request, HttpServletResponse response){
 
 
         log.info("用户下单"+ JsonUtils.objectToJson(submitOrderBO));
@@ -46,11 +49,13 @@ public class OrdersController {
         }
 
 //        1. 创建订单
+        String orderId = orderService.createOrder(submitOrderBO);
 //        2. 创建订单以后，移除购物车中 已结算（已提交）的商品
+        //TODO 整合redis后，完善购物车中的已结算商品清除，并且同步到前端的cookie
+//        CookieUtils.setCookie(request,response,FOODIE_SHOPCART,"",true);
 //        3. 向支付中心发送当前订单，用于保存支付中心的订单数据
-        orderService.createOrder(submitOrderBO);
 
-        return IMOOCJSONResult.ok();
+        return IMOOCJSONResult.ok(orderId);
     }
 
 

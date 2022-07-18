@@ -1,28 +1,18 @@
 package com.imooc.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.imooc.enums.CommentLevel;
 import com.imooc.enums.OrderStatusEnum;
 import com.imooc.enums.YesOrNo;
 import com.imooc.mapper.*;
 import com.imooc.pojo.*;
 import com.imooc.pojo.bo.SubmitOrderBO;
-import com.imooc.pojo.vo.CommentLevelCountsVO;
-import com.imooc.pojo.vo.ItemCommentVO;
-import com.imooc.pojo.vo.SearchItemsVO;
-import com.imooc.pojo.vo.ShopcartVO;
 import com.imooc.service.AddressService;
 import com.imooc.service.ItemService;
 import com.imooc.service.OrderService;
-import com.imooc.utils.PagedGridResult;
 import org.n3r.idworker.Sid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.configurationprocessor.metadata.ItemMetadata;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import tk.mybatis.mapper.entity.Example;
 
 import java.util.*;
 
@@ -57,7 +47,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED)
-    public void createOrder(SubmitOrderBO submitOrderBO) {
+    public String createOrder(SubmitOrderBO submitOrderBO) {
         String userId = submitOrderBO.getUserId();
         String addressId = submitOrderBO.getAddressId();
         String itemSpecIds = submitOrderBO.getItemSpecIds();
@@ -138,6 +128,7 @@ public class OrderServiceImpl implements OrderService {
 
         orderStatusMapper.insert(waitPayOrderStatus);
 
+        return orderId;
     }
 
 }

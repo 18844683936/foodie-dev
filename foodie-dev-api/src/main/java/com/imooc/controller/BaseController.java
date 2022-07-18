@@ -10,7 +10,9 @@ import springfox.documentation.annotations.ApiIgnore;
  * @create: 2022-06-24
  */
 public class BaseController {
-    public final Integer COMMENT_PAGE_SIZE = 10;
+    public static final Integer COMMENT_PAGE_SIZE = 10;
 
-    public final Integer PAGE_SIZE = 20;
+    public static final Integer PAGE_SIZE = 20;
+
+    public static final  String FOODIE_SHOPCART = "shopcart";
 }
